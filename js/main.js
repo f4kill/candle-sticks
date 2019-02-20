@@ -10,6 +10,14 @@ p5.prototype.candleStick = function(x, y, w, h, min, max) {
 
 	let strokeWeight = this.drawingContext.lineWidth;
 
+	let lineLeftX = ltCornerX + strokeWeight/2;
+	let lineRightX = rbCornerX - strokeWeight/2;
+
+	if(strokeWeight == 1) {
+		lineLeftX -= .5;
+		lineRightX -= .5;
+	}
+
 	// cache settings to restore afterward
 	let rectMode = this._renderer._rectMode;
 	this.rectMode(this.CORNER);
@@ -22,11 +30,11 @@ p5.prototype.candleStick = function(x, y, w, h, min, max) {
 	// - top vertical line
 	this.line(x, topBarY, x, ltCornerY);
 	// - top horizontal line
-	this.line(ltCornerX, topBarY, rbCornerX, topBarY);
+	this.line(lineLeftX, topBarY, lineRightX, topBarY);
 	// - bottom vertical line
 	this.line(x, rbCornerY, x, botBarY);
 	// - bottom horizontal line
-	this.line(ltCornerX, botBarY, rbCornerX, botBarY);
+	this.line(lineLeftX, botBarY, lineRightX, botBarY);
 
 	this.noStroke();
 	this.rect(ltCornerX, ltCornerY, w, h);
@@ -54,7 +62,7 @@ let s = function( p ) {
 
     p.fill(255);
     p.stroke(100, 255, 100);
-    p.strokeWeight(2);
+    // p.strokeWeight(2);
     p.candleStick(100, 100, 20, 40, 10, 20);
   }
 }
