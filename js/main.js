@@ -1,40 +1,61 @@
-// class CandleStick {
-// 	constructor(p5instance) {
-// 		this.p = p5instance;
-// 	}
+p5.prototype.candleStick = function(x, y, w, h, min, max) {
+	// misc coords
+	let ltCornerX = x - w/2;
+	let ltCornerY = y - h/2;
+	let rbCornerX = x + w/2;
+	let rbCornerY = y + h/2;
 
-// 	setPosition(x, y) {
+	let topBarY = ltCornerY - max;
+	let botBarY = rbCornerY + min;
 
-// 	}
+	let strokeWeight = this.drawingContext.lineWidth;
 
-// 	draw() {
+	// cache settings to restore afterward
+	let rectMode = this._renderer._rectMode;
+	this.rectMode(this.CORNER);
 
-// 	}
-// }
+	let doStroke = this._renderer._doStroke;
+	let stroke = this._renderer._getStroke();
 
-function candleStick(x, y, w, h, min, max) {
-	let fill = p._renderer._getFill();
-	let stroke = p._renderer._getStroke();
 
-	let doFill = p._doFill,
-		doStroke = p._doStroke;
+	// draw
+	// - top vertical line
+	this.line(x, topBarY, x, ltCornerY);
+	// - top horizontal line
+	this.line(ltCornerX, topBarY, rbCornerX, topBarY);
+	// - bottom vertical line
+	this.line(x, rbCornerY, x, botBarY);
+	// - bottom horizontal line
+	this.line(ltCornerX, botBarY, rbCornerX, botBarY);
 
-	
+	this.noStroke();
+	this.rect(ltCornerX, ltCornerY, w, h);
+
+
+	// restore settings
+	if(doStroke) {
+		this.stroke(stroke);
+	}
+
+	this.rectMode(rectMode);
 }
 
 let s = function( p ) {
 
   p.setup = function() {
-    p.createCanvas(200, 200);
+    p.createCanvas(window.innerWidth, window.innerHeight);
 
     console.log(this);
     console.log(p._renderer._getFill());
-    // let candle = new CandleStick(0, 0, 20, 40, 80, -20);
   }
 
   p.draw = function() {
     p.background(0);
 
+    p.fill(255);
+    p.stroke(100, 255, 100);
+    p.strokeWeight(2);
+    p.candleStick(100, 100, 20, 40, 10, 20);
   }
 }
 
